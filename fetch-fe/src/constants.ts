@@ -1,5 +1,5 @@
-export const BASE_URL = 'https://frontend-take-home-service.fetch.com' as const
-export const APP_NAME = 'Pawradise' as const
+export const BASE_URL = 'https://frontend-take-home-service.fetch.com'
+export const APP_NAME = 'Pawradise'
 export const API_ENDPOINTS = {
   LOGIN: '/auth/login',
   LOGOUT: '/auth/logout',

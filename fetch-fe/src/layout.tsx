@@ -3,7 +3,7 @@ import { useAuth } from '@/hooks/useAuth'
 import { Button } from '@/components/ui/button'
 
 export default function Layout() {
-  const auth = useAuth()
+  const { user, isAuthenticated, signOut } = useAuth()
 
   return (
     <div className="flex flex-col min-h-screen w-full max-w-[1280px] mx-auto">
@@ -11,8 +11,11 @@ export default function Layout() {
       <header className="w-full py-2">
         <div className="max-w-6xl mx-auto px-6 flex justify-between items-center">
           <img src="/logo.svg" alt="logo" className="h-10 w-10" />
-          {auth?.isAuthenticated && (
-            <Button onClick={auth?.signOut}>Sign Out</Button>
+          {isAuthenticated && (
+            <div className="flex gap-4 align-center">
+              {user?.name && <span>Welcome, {user?.name}!</span>}
+              <Button onClick={signOut}>Sign Out</Button>
+            </div>
           )}
         </div>
       </header>

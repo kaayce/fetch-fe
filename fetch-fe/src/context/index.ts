@@ -7,4 +7,10 @@ type AuthContextType = {
   signIn: (user: User) => void
   signOut: () => void
 }
-export const AuthContext = createContext<null | AuthContextType>(null)
+
+export const AuthContext = createContext<AuthContextType>({
+  user: null,
+  isAuthenticated: false,
+  signIn: () => {},
+  signOut: () => {},
+})

@@ -58,8 +58,10 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
       if (logoutTimer) clearTimeout(logoutTimer)
       const timer = setTimeout(() => signOut(), LOGOUT_TIMEOUT)
       setLogoutTimer(timer)
+
+      navigate('/')
     },
-    [signOut, logoutTimer]
+    [logoutTimer, navigate, signOut]
   )
 
   const value = useMemo(
