@@ -14,6 +14,13 @@ import { loginSchema, LoginSchemaType } from '@/lib/validations'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTransition } from 'react'
 import { useForm } from 'react-hook-form'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 
 const Login = () => {
   const { signIn } = useAuth()
@@ -43,51 +50,60 @@ const Login = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center">
-      <Form {...form}>
-        <h1 className="text-2xl font-bold mb-4">Welcome to {APP_NAME}!</h1>
-        <h3 className="text-xl font-bold mb-4">
+    <Card className="w-full max-w-md mx-auto p-6 glass-card animate-fade-up">
+      <CardHeader className="space-y-2 text-center">
+        <CardTitle className="text-2xl font-semibold tracking-tight">
+          Welcome to {APP_NAME}
+        </CardTitle>
+        <CardDescription>
           Login to see some really cool doggos 🐶
-        </h3>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 w-xl">
-          <FormField
-            control={control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Name</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <div className="flex justify-end">
-            <Button
-              disabled={isPending}
-              type="submit"
-              className="cursor-pointer"
-            >
-              Sign In
-            </Button>
-          </div>
-        </form>
-      </Form>
-    </div>
+        </CardDescription>
+      </CardHeader>
+
+      <CardContent>
+        <Form {...form}>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <FormField
+              control={control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input {...field} className="w-full" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input {...field} className="w-full" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <div className="flex justify-end">
+              <Button
+                disabled={isPending}
+                type="submit"
+                className="w-full cursor-pointer"
+              >
+                Sign In
+              </Button>
+            </div>
+          </form>
+        </Form>
+      </CardContent>
+    </Card>
   )
 }
 export default Login
