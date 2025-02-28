@@ -1,6 +1,7 @@
 import { Outlet, Link } from 'react-router'
 import { useAuth } from '@/hooks/useAuth'
 import { Button } from '@/components/ui/button'
+import { REPO_URL } from './lib/constants'
 
 export default function Layout() {
   const { user, isAuthenticated, signOut } = useAuth()
@@ -8,13 +9,15 @@ export default function Layout() {
   return (
     <div className="flex flex-col min-h-screen w-full max-w-[1280px] mx-auto">
       {/* Header */}
-      <header className="w-full py-2">
+      <header className="w-full py-4">
         <div className="max-w-6xl mx-auto px-6 flex justify-between items-center">
           <img src="/logo.svg" alt="logo" className="h-10 w-10" />
           {isAuthenticated && (
             <div className="flex gap-4 align-center">
               {user?.name && <span>Welcome, {user?.name}!</span>}
-              <Button onClick={signOut}>Sign Out</Button>
+              <Button onClick={signOut} className="cursor-pointer">
+                Sign Out
+              </Button>
             </div>
           )}
         </div>
@@ -28,12 +31,12 @@ export default function Layout() {
       </main>
 
       {/* Footer */}
-      <footer className="w-full shadow-md py-4">
+      <footer className="w-full shadow-md py-3">
         <div className="max-w-6xl mx-auto px-6 text-center">
           <p>
             Made with ❤️ |{' '}
             <Link
-              to="https://github.com/kaayce/fetch-FE"
+              to={REPO_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="text-blue-400 hover:text-blue-300 underline transition"

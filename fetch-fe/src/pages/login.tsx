@@ -8,7 +8,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { APP_NAME } from '@/constants'
+import { APP_NAME } from '@/lib/constants'
 import { useAuth } from '@/hooks/useAuth'
 import { loginSchema, LoginSchemaType } from '@/lib/validations'
 import { zodResolver } from '@hookform/resolvers/zod'

@@ -1,4 +1,4 @@
-import { BASE_URL, API_ENDPOINTS } from '@/constants'
+import { BASE_URL, API_ENDPOINTS } from '@/lib/constants'
 
 export const apiRequest = async <T = unknown>(
   segment: keyof typeof API_ENDPOINTS,
