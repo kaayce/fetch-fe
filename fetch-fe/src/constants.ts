@@ -8,5 +8,5 @@ export const API_ENDPOINTS = {
   DOG_MATCH: '/dogs/match',
   LOCATIONS: '/locations',
   LOCATION_SEARCH: '/locations/search',
-  SEARCH: '/dogs/search',
+  DOG_SEARCH: '/dogs/search',
 } as const

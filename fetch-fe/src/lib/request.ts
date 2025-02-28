@@ -3,15 +3,15 @@ import { BASE_URL, API_ENDPOINTS } from '@/constants'
 export const apiRequest = async <T = unknown>(
   segment: keyof typeof API_ENDPOINTS,
   options: RequestInit = {},
-  params?: Record<string, string>
+  params?: URLSearchParams
 ): Promise<T | string | undefined> => {
   try {
     const url = new URL(API_ENDPOINTS[segment], BASE_URL)
 
     if (params) {
-      Object.entries(params).forEach(([key, value]) =>
+      params.forEach((value, key) => {
         url.searchParams.append(key, value)
-      )
+      })
     }
 
     const optionsWithHeaders: RequestInit = {
@@ -27,7 +27,7 @@ export const apiRequest = async <T = unknown>(
 
     if (!res.ok) {
       console.error(res)
-      throw new Error(`HTTP error! status: ${res.status}`)
+      throw new Error(`API error. Status: ${res.status}`)
     }
 
     const contentType = res.headers.get('content-type')
