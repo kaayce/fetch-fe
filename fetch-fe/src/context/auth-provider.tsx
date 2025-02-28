@@ -10,6 +10,7 @@ import { AuthContext } from './index'
 import { useLocation, useNavigate } from 'react-router'
 import { login, logout } from '@/api/auth'
 import SessionStorage from '@/lib/storage'
+import { toast } from 'sonner'
 
 const LOGOUT_TIMEOUT = 1000 * 60 * 60 // 1 hour
 const sessionStorage = new SessionStorage()
@@ -23,8 +24,6 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
   const navigate = useNavigate()
   const { pathname } = useLocation()
-
-  console.log({ user })
 
   useEffect(() => {
     const storedUser = sessionStorage.getValue<User>('user')
@@ -43,35 +42,47 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
   }, [logoutTimer])
 
   const signOut = useCallback(async () => {
-    await logout()
-    setUser(null)
-    setIsAuthenticated(false)
-    sessionStorage.removeValue('user')
+    try {
+      await logout()
+    } catch (error) {
+      console.error('Logout failed:', error)
+      toast('Logout Failed')
+    } finally {
+      setUser(null)
+      setIsAuthenticated(false)
+      sessionStorage.removeValue('user')
 
-    if (logoutTimer) clearTimeout(logoutTimer)
-    setLogoutTimer(null)
+      if (logoutTimer) clearTimeout(logoutTimer)
+      setLogoutTimer(null)
 
-    navigate('/login')
+      navigate('/login')
+    }
   }, [logoutTimer, navigate])
 
   const signIn = useCallback(
     async (user: User) => {
-      const response = await login(user)
+      try {
+        const response = await login(user)
 
-      if (!response) {
-        console.error('Login failed')
-        return
+        if (!response) {
+          console.error('Login failed')
+          toast('Login Failed')
+          return
+        }
+
+        setUser(user)
+        setIsAuthenticated(true)
+        sessionStorage.setValue<User>('user', user)
+
+        if (logoutTimer) clearTimeout(logoutTimer)
+        const timer = setTimeout(() => signOut(), LOGOUT_TIMEOUT)
+        setLogoutTimer(timer)
+
+        navigate('/')
+      } catch (error) {
+        console.error('Login failed:', error)
+        toast('Login Failed')
       }
-
-      setUser(user)
-      setIsAuthenticated(true)
-      sessionStorage.setValue('user', user)
-
-      if (logoutTimer) clearTimeout(logoutTimer)
-      const timer = setTimeout(() => signOut(), LOGOUT_TIMEOUT)
-      setLogoutTimer(timer)
-
-      navigate('/')
     },
     [logoutTimer, navigate, signOut]
   )
