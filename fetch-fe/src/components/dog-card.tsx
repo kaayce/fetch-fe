@@ -14,7 +14,7 @@ const DogCard = ({
   onToggleFavorite,
 }: Props) => {
   return (
-    <Card className="relative w-52 p-0 gap-0 pb-3">
+    <Card className="relative p-0 gap-0 pb-3">
       {/* Image */}
       <div className="bg-white rounded-t-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl dark:bg-gray-950">
         <img

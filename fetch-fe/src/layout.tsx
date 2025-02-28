@@ -1,7 +1,7 @@
 import { Outlet, Link } from 'react-router'
 import { useAuth } from '@/hooks/useAuth'
 import { Button } from '@/components/ui/button'
-import { REPO_URL } from './lib/constants'
+import { APP_NAME, REPO_URL } from './lib/constants'
 
 export default function Layout() {
   const { user, isAuthenticated, signOut } = useAuth()
@@ -11,10 +11,13 @@ export default function Layout() {
       {/* Header */}
       <header className="w-full py-4">
         <div className="max-w-6xl mx-auto px-6 flex justify-between items-center">
-          <img src="/logo.svg" alt="logo" className="h-10 w-10" />
+          <div className="flex gap-4 items-center">
+            <img src="/logo.svg" alt="logo" className="h-10 w-10" />
+            <p className="text-lg font-semibold">{APP_NAME}</p>
+          </div>
           {isAuthenticated && (
-            <div className="flex gap-4 align-center">
-              {user?.name && <span>Welcome, {user?.name}!</span>}
+            <div className="flex gap-4 items-center">
+              {user?.name && <span>Welcome, {user?.name.split(' ')[0]}!</span>}
               <Button onClick={signOut} className="cursor-pointer">
                 Sign Out
               </Button>
