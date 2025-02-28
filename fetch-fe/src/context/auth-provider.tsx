@@ -9,8 +9,10 @@ import type { User } from '../types'
 import { AuthContext } from './index'
 import { useLocation, useNavigate } from 'react-router'
 import { login, logout } from '@/api/auth'
+import SessionStorage from '@/lib/storage'
 
 const LOGOUT_TIMEOUT = 1000 * 60 * 60 // 1 hour
+const sessionStorage = new SessionStorage()
 
 export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null)
@@ -22,11 +24,17 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const navigate = useNavigate()
   const { pathname } = useLocation()
 
+  console.log({ user })
+
   useEffect(() => {
-    if (!isAuthenticated && pathname !== '/login') {
+    const storedUser = sessionStorage.getValue<User>('user')
+    if (storedUser) {
+      setUser(storedUser)
+      setIsAuthenticated(true)
+    } else if (pathname !== '/login') {
       navigate('/login')
     }
-  }, [isAuthenticated, pathname, navigate])
+  }, [pathname, navigate, isAuthenticated])
 
   useEffect(() => {
     return () => {
@@ -38,10 +46,13 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
     await logout()
     setUser(null)
     setIsAuthenticated(false)
+    sessionStorage.removeValue('user')
 
     if (logoutTimer) clearTimeout(logoutTimer)
     setLogoutTimer(null)
-  }, [logoutTimer])
+
+    navigate('/login')
+  }, [logoutTimer, navigate])
 
   const signIn = useCallback(
     async (user: User) => {
@@ -54,6 +65,7 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
       setUser(user)
       setIsAuthenticated(true)
+      sessionStorage.setValue('user', user)
 
       if (logoutTimer) clearTimeout(logoutTimer)
       const timer = setTimeout(() => signOut(), LOGOUT_TIMEOUT)

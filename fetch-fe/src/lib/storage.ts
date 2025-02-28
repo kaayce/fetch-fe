@@ -1,7 +1,8 @@
+import type { User } from '@/types'
 import { HOUR } from './constants'
 
 class SessionStorage {
-  setValue(key: string, value: string, ttl: number = HOUR) {
+  setValue<T = User | string>(key: string, value: T, ttl: number = HOUR) {
     const expiration = Date.now() + ttl
     const item = {
       value,
@@ -10,7 +11,7 @@ class SessionStorage {
     sessionStorage.setItem(key, JSON.stringify(item))
   }
 
-  getValue(key: string): string | null {
+  getValue<T = User | string>(key: string): T | null {
     const itemString = sessionStorage.getItem(key)
     if (!itemString) {
       return null
@@ -23,6 +24,10 @@ class SessionStorage {
     }
 
     return item.value
+  }
+
+  removeValue(key: string) {
+    sessionStorage.removeItem(key)
   }
 }
 
