@@ -3,10 +3,10 @@ import { useQuery } from '@tanstack/react-query'
 
 export const useFetchLocations = ({
   zipCodes,
-  enabled = false,
+  enabled,
 }: {
   zipCodes: string[]
-  enabled: boolean
+  enabled?: boolean
 }) => {
   const { data: locations = [], isLoading: locationsLoading } = useQuery({
     queryKey: ['fetchLocationsByZipCodes', zipCodes],

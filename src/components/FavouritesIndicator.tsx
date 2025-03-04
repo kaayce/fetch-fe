@@ -4,7 +4,7 @@ import {
   Tooltip,
   TooltipTrigger,
   TooltipContent,
-} from '@radix-ui/react-tooltip'
+} from '@/components/ui/tooltip'
 import { Heart } from 'lucide-react'
 
 type Props = {

@@ -1,12 +1,10 @@
 import type { DogWithLocation, FavouriteDog } from '@/api/dog.types'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from '@radix-ui/react-popover'
+
 import { Heart, CircleEllipsis } from 'lucide-react'
 import { Button } from './ui/button'
+import { Popover, PopoverContent } from './ui/popover'
+import { PopoverTrigger } from '@/components/ui/popover'
 
 type Props = {
   dog: DogWithLocation
