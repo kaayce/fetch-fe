@@ -22,7 +22,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 
-const Login = () => {
+const LoginPage = () => {
   const { signIn } = useAuth()
   const [isPending, startTransition] = useTransition()
 
@@ -106,4 +106,4 @@ const Login = () => {
     </Card>
   )
 }
-export default Login
+export default LoginPage

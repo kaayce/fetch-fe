@@ -9,7 +9,7 @@ import sessionStorageInstance from '@/lib/storage'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router'
 
-const Match = () => {
+const MatchPage = () => {
   const match = sessionStorageInstance.getValue<string>('match')
 
   const navigate = useNavigate()
@@ -83,4 +83,4 @@ const DogMatchCardSkeleton = () => {
   )
 }
 
-export default Match
+export default MatchPage

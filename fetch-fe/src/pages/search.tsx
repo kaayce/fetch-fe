@@ -26,7 +26,7 @@ const sortFields: Record<SortField, string> = {
 
 const pageSizeOptions = ['20', '40', '60', '80', '100']
 
-const Search = () => {
+const SearchPage = () => {
   const { filters, setFilters } = useDogFilters()
   const { dogs, dogsLoading, searchResults } = useDogs(filters)
   const { toggleFavourites, favourites, resetFavourites } = useFavourites()
@@ -164,4 +164,4 @@ const getFromValue = (url: string | null): string => {
   const urlParams = new URLSearchParams(url ?? '')
   return urlParams.get('from') ?? '0'
 }
-export default Search
+export default SearchPage
