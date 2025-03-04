@@ -5,8 +5,7 @@ import type {
   DogSearchResponse,
   Match,
 } from './dog.types'
-
-const LIMIT = 25
+import { MAX_PAGE_LIMIT, PAGE_LIMIT } from '@/lib/constants'
 
 // "dogs/breeds"
 export const getDogBreeds = async () => {
@@ -25,7 +24,9 @@ export const searchDogs = async (params: DogSearchParams) => {
   }
   if (params.ageMin) queryParams.append('ageMin', params.ageMin.toString())
   if (params.ageMax) queryParams.append('ageMax', params.ageMax.toString())
-  if (params.size) queryParams.append('size', params.size.toString())
+  if (params.size) {
+    queryParams.append('size', params.size.toString() || PAGE_LIMIT.toString())
+  }
   if (params.from) queryParams.append('from', params.from)
   if (params.sort) queryParams.append('sort', params.sort)
 
@@ -39,8 +40,9 @@ export const searchDogs = async (params: DogSearchParams) => {
 }
 
 // "dogs"
-export const fetchDogsById = async (dogIds: string[]) => {
-  if (dogIds.length > 100) throw new Error('Max: 100 dogs per request')
+export const fetchDogsByIds = async (dogIds: string[]) => {
+  if (dogIds.length > MAX_PAGE_LIMIT)
+    throw new Error('Max: 100 dogs per request')
 
   return apiRequest<Dog[]>('DOGS', {
     method: 'POST',
@@ -50,7 +52,7 @@ export const fetchDogsById = async (dogIds: string[]) => {
 
 // "dogs/match"
 export const matchDogsByIds = async (dogIds: string[]) => {
-  return apiRequest<Match[]>('DOG_MATCH', {
+  return apiRequest<Match>('DOG_MATCH', {
     method: 'POST',
     body: JSON.stringify(dogIds),
   })
