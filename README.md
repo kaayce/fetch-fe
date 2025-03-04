@@ -31,7 +31,13 @@ Open [http://localhost:5173](http://localhost:5173) with your browser to see the
 
 ## Limitations
 
-**Note: Issue with the API for "/locations/search"**
+### Issue with the API for "/locations/search"
 
 - The API documentation specifies the request body as `LocationSearchParams`, but the API actually expects an array of zip codes instead.
 - Whenever I expect to pass a record in the request body it fails, it seems the API instead expects an array instead.
+
+### Issue with 3rd party cookies
+
+- In production, browsers with strict cookie policies may prevent cookies from being set.
+- To address this issue, you can:
+  - Adjust settings to allow third-party cookies.
