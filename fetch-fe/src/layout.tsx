@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { APP_NAME, REPO_URL } from './lib/constants'
 import { useFavourites } from './hooks/useFavourite'
 import FavouritesIndicator from './components/FavouritesIndicator'
+import { Toaster } from 'sonner'
 
 export default function Layout() {
   const { isAuthenticated, signOut } = useAuth()
@@ -33,6 +34,7 @@ export default function Layout() {
       <main className="flex-grow flex justify-center w-full px-4 py-10">
         <div className="max-w-7xl">
           <Outlet />
+          <Toaster expand />
         </div>
       </main>
 

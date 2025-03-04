@@ -21,7 +21,7 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: DAY,
-      placeholderData: (prev) => prev,
+      placeholderData: (prev: unknown) => prev,
     },
   },
 })

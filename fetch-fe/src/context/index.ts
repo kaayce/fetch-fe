@@ -9,6 +9,12 @@ type AuthContextType = {
   signOut: () => void
 }
 
+type FavouritesContextType = {
+  favourites: FavouriteDog[]
+  toggleFavourites: (favourite: FavouriteDog) => void
+  resetFavourites: () => void
+}
+
 export const AuthContext = createContext<AuthContextType>({
   user: null,
   isAuthenticated: false,
@@ -16,8 +22,8 @@ export const AuthContext = createContext<AuthContextType>({
   signOut: () => {},
 })
 
-export const FavouritesContext = createContext({
+export const FavouritesContext = createContext<FavouritesContextType>({
   favourites: [] as FavouriteDog[],
-  toggleFavourites: (favourite: FavouriteDog) => {},
+  toggleFavourites: () => {},
   resetFavourites: () => {},
 })

@@ -53,7 +53,6 @@ export const BreedComboBox = ({
             variant="outline"
             aria-expanded={isOpen}
             className="justify-between"
-            // className="w-[200px] justify-between"
           >
             {displayText}
             <ChevronsUpDown className="opacity-50" />

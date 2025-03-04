@@ -6,19 +6,20 @@ import { toast } from 'sonner'
 export const FavoritesProvider = ({ children }: PropsWithChildren) => {
   const [favourites, setFavourites] = useState<FavouriteDog[]>([])
 
-  const toggleFavourites = useCallback((favourite: FavouriteDog) => {
-    setFavourites((prev) => {
-      const isFavourite = prev.some((dog) => dog.id === favourite.id)
+  const toggleFavourites = useCallback(
+    (favourite: FavouriteDog) => {
+      const isFavourite = favourites.some((dog) => dog.id === favourite.id)
 
       if (isFavourite) {
+        setFavourites((prev) => prev.filter((dog) => dog.id !== favourite.id))
         toast.success(`Removed ${favourite.name} from favourites`)
-        return prev.filter((dog) => dog.id !== favourite.id)
       } else {
+        setFavourites((prev) => [...prev, favourite])
         toast.success(`Added ${favourite.name} to favourites`)
-        return [...prev, favourite]
       }
-    })
-  }, [])
+    },
+    [favourites]
+  )
 
   const resetFavourites = useCallback(() => {
     setFavourites([])

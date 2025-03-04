@@ -1,4 +1,3 @@
-// useLocationFilters.ts
 import { useState } from 'react'
 import { LocationSearchParams } from '@/api/location.types'
 import { PAGE_LIMIT } from '@/lib/constants'

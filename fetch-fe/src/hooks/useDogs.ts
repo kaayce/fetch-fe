@@ -27,10 +27,12 @@ export const useDogs = (filters: Required<DogSearchParams>) => {
   })
 
   const dogsWithLocation: DogWithLocation[] = useMemo(() => {
-    if (locationsLoading || dogsLoading) return []
+    if (locationsLoading || dogsLoading || !dogs.length || !locations.length) {
+      return []
+    }
 
     const locationMap = new Map<string, GeoInfo>(
-      locations.map((l) => [l?.zip_code, l])
+      locations.filter((l) => !!l?.zip_code).map((l) => [l.zip_code, l])
     )
 
     return dogs.map((d) => ({
