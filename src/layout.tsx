@@ -34,7 +34,7 @@ export default function Layout() {
       <main className="flex-grow flex justify-center w-full px-4 py-10">
         <div className="max-w-7xl">
           <Outlet />
-          <Toaster expand />
+          <Toaster />
         </div>
       </main>
 
