@@ -23,7 +23,7 @@ type Props = {
   selectedItems: string[]
   items: string[]
 }
-export const BreedComboBox = ({
+export const BreedSelect = ({
   onToggleSelection,
   onClearSelection,
   selectedItems,

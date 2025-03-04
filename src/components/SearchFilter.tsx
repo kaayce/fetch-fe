@@ -1,5 +1,5 @@
 import { useCallback, type Dispatch, type SetStateAction } from 'react'
-import { BreedComboBox } from './BreedComboBox'
+import { BreedSelect } from './BreedSelect'
 import { AgeSlider } from './AgeSlider'
 import type { DogSearchParams } from '@/api/dog.types'
 import { Button } from './ui/button'
@@ -55,7 +55,7 @@ export const SearchFilter = ({ totalResults, filters, setFilters }: Props) => {
       <span className="text-sm text-gray-500">
         {totalResults > 0 && `${totalResults} results found`}
       </span>
-      <BreedComboBox
+      <BreedSelect
         items={breeds}
         selectedItems={filters?.breeds ?? []}
         onToggleSelection={toggleSelection}
