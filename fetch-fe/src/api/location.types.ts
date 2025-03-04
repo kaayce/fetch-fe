@@ -1,4 +1,4 @@
-export type GeoLocation = {
+export type GeoInfo = {
   zip_code: string
   latitude: number
   longitude: number
@@ -29,6 +29,6 @@ export type LocationSearchParams = {
 }
 
 export type LocationSearchResponse = {
-  results: GeoLocation[]
+  results: GeoInfo[]
   total: number
 }

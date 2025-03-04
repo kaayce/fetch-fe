@@ -1,13 +1,16 @@
 import { apiRequest } from '@/lib/request'
 import type {
-  GeoLocation,
+  GeoInfo,
   LocationSearchParams,
   LocationSearchResponse,
 } from './location.types'
+import { MAX_PAGE_LIMIT } from '@/lib/constants'
 
 // locations
 export const fetchLocationsByZipCodes = async (zipCodes: string[]) => {
-  return apiRequest<GeoLocation[]>('DOG_SEARCH', {
+  if (zipCodes.length > MAX_PAGE_LIMIT)
+    throw new Error('Max: 100 locations per request')
+  return apiRequest<GeoInfo[]>('LOCATIONS', {
     method: 'POST',
     body: JSON.stringify(zipCodes),
   })
@@ -17,7 +20,7 @@ export const fetchLocationsByZipCodes = async (zipCodes: string[]) => {
 
 export const searchLocations = async (params: LocationSearchParams) => {
   return apiRequest<LocationSearchResponse>('LOCATION_SEARCH', {
-    method: 'GET',
+    method: 'POST',
     body: JSON.stringify(params),
   })
 }
