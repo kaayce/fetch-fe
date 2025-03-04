@@ -4,7 +4,7 @@ export const apiRequest = async <T = unknown>(
   segment: keyof typeof API_ENDPOINTS,
   options: RequestInit = {},
   params?: URLSearchParams
-): Promise<T | string | undefined> => {
+): Promise<T> => {
   try {
     const url = new URL(API_ENDPOINTS[segment], BASE_URL)
 
@@ -34,10 +34,10 @@ export const apiRequest = async <T = unknown>(
     if (contentType?.includes('application/json')) {
       return (await res.json()) as T
     } else {
-      return await res.text()
+      return (await res.text()) as T
     }
-  } catch (error) {
-    console.error(error)
-    return undefined
+  } catch (error: unknown) {
+    console.error(`API request failed for ${segment}:`, error)
+    throw error
   }
 }
