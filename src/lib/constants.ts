@@ -1,6 +1,6 @@
 export const BASE_URL = 'https://frontend-take-home-service.fetch.com'
 export const APP_NAME = 'Pawradise'
-export const REPO_URL = 'https://github.com/kaayce/fetch-FE'
+export const REPO_URL = 'https://github.com/kaayce/fetch-fe'
 export const MAX_DOG_AGE = 30
 export const PAGE_LIMIT = 20
 export const MAX_PAGE_LIMIT = 100
