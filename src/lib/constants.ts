@@ -4,8 +4,7 @@ export const REPO_URL = 'https://github.com/kaayce/fetch-fe'
 export const MAX_DOG_AGE = 30
 export const PAGE_LIMIT = 20
 export const MAX_PAGE_LIMIT = 100
-export const HOUR = 60
-// export const HOUR = 60 * 60 * 1000
+export const HOUR = 60 * 60 * 1000
 export const DAY = 60 * 60 * 1000 * 24
 export const DELAY_MS = 300
 
