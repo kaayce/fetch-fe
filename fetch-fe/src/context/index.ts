@@ -1,3 +1,4 @@
+import type { FavouriteDog } from '@/api/dog.types'
 import type { User } from '@/types'
 import { createContext } from 'react'
 
@@ -13,4 +14,10 @@ export const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
   signIn: () => {},
   signOut: () => {},
+})
+
+export const FavouritesContext = createContext({
+  favourites: [] as FavouriteDog[],
+  toggleFavourites: (favourite: FavouriteDog) => {},
+  resetFavourites: () => {},
 })

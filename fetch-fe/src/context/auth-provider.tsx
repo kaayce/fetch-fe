@@ -1,95 +1,58 @@
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-  type PropsWithChildren,
-} from 'react'
+import { useEffect, useMemo, type PropsWithChildren } from 'react'
+import { useMutation } from '@tanstack/react-query'
+import { useLocation, useNavigate } from 'react-router'
+import { toast } from 'sonner'
 import type { User } from '../types'
 import { AuthContext } from './index'
-import { useLocation, useNavigate } from 'react-router'
 import { login, logout } from '@/api/auth'
-import SessionStorage from '@/lib/storage'
-import { toast } from 'sonner'
-
-const LOGOUT_TIMEOUT = 1000 * 60 * 60 // 1 hour
-const sessionStorage = new SessionStorage()
+import { HOUR, PATHS } from '@/lib/constants'
+import sessionStorageInstance from '@/lib/storage'
 
 export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null)
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [logoutTimer, setLogoutTimer] = useState<ReturnType<
-    typeof setTimeout
-  > | null>(null)
-
   const navigate = useNavigate()
   const { pathname } = useLocation()
 
   useEffect(() => {
-    const storedUser = sessionStorage.getValue<User>('user')
+    const storedUser = sessionStorageInstance.getValue<User>('user')
     if (storedUser) {
-      setUser(storedUser)
-      setIsAuthenticated(true)
-    } else if (pathname !== '/login') {
-      navigate('/login')
+      navigate(pathname === PATHS.LOGIN ? PATHS.HOME : pathname)
+    } else {
+      navigate(PATHS.LOGIN)
     }
-  }, [pathname, navigate, isAuthenticated])
+  }, [pathname, navigate])
 
-  useEffect(() => {
-    return () => {
-      if (logoutTimer) clearTimeout(logoutTimer)
-    }
-  }, [logoutTimer])
-
-  const signOut = useCallback(async () => {
-    try {
-      await logout()
-    } catch (error) {
-      console.error('Logout failed:', error)
-      toast('Logout Failed')
-    } finally {
-      setUser(null)
-      setIsAuthenticated(false)
+  const { mutate: signOut } = useMutation({
+    mutationFn: logout,
+    onSuccess: () => {
       sessionStorage.removeValue('user')
-
-      if (logoutTimer) clearTimeout(logoutTimer)
-      setLogoutTimer(null)
-
-      navigate('/login')
-    }
-  }, [logoutTimer, navigate])
-
-  const signIn = useCallback(
-    async (user: User) => {
-      try {
-        const response = await login(user)
-
-        if (!response) {
-          console.error('Login failed')
-          toast('Login Failed')
-          return
-        }
-
-        setUser(user)
-        setIsAuthenticated(true)
-        sessionStorage.setValue<User>('user', user)
-
-        if (logoutTimer) clearTimeout(logoutTimer)
-        const timer = setTimeout(() => signOut(), LOGOUT_TIMEOUT)
-        setLogoutTimer(timer)
-
-        navigate('/')
-      } catch (error) {
-        console.error('Login failed:', error)
-        toast('Login Failed')
-      }
+      toast.success('Logged out successfully')
+      navigate(PATHS.LOGIN)
     },
-    [logoutTimer, navigate, signOut]
-  )
+    onError: () => toast.error('Logout Failed'),
+  })
+
+  const signIn = useMutation({
+    mutationFn: async (user: User) => {
+      const response = await login(user)
+      if (!response) throw new Error('Login failed')
+      return user
+    },
+    onSuccess: (user) => {
+      sessionStorageInstance.setValue<User>('user', user, HOUR)
+      toast.success('Login Successful')
+      navigate(PATHS.HOME)
+    },
+    onError: () => toast.error('Login Failed'),
+  })
 
   const value = useMemo(
-    () => ({ user, isAuthenticated, signIn, signOut }),
-    [isAuthenticated, signIn, signOut, user]
+    () => ({
+      user: sessionStorageInstance.getValue<User>('user'),
+      isAuthenticated: !!sessionStorageInstance.getValue<User>('user'),
+      signIn: signIn.mutate,
+      signOut,
+    }),
+    [signIn.mutate, signOut]
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
