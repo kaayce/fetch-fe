@@ -1,4 +1,5 @@
-import { BASE_URL, API_ENDPOINTS } from '@/lib/constants'
+import { BASE_URL, API_ENDPOINTS, PATHS } from '@/lib/constants'
+import sessionStorageInstance from './storage'
 
 export const apiRequest = async <T = unknown>(
   segment: keyof typeof API_ENDPOINTS,
@@ -24,6 +25,21 @@ export const apiRequest = async <T = unknown>(
     }
 
     const res = await fetch(String(url), optionsWithHeaders)
+
+    if (res.status === 401) {
+      console.error('Authentication error detected')
+      sessionStorageInstance.removeValue('user')
+
+      if (typeof window !== 'undefined') {
+        if (window.location.pathname === PATHS.LOGIN) {
+          window.location.reload()
+        } else {
+          window.location.href = PATHS.LOGIN
+        }
+      }
+
+      throw new Error('Authentication failed. Redirecting to login...')
+    }
 
     if (!res.ok) {
       console.error(res)
