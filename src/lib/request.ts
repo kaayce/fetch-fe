@@ -16,12 +16,12 @@ export const apiRequest = async <T = unknown>(
     }
 
     const optionsWithHeaders: RequestInit = {
-      credentials: 'include' as RequestCredentials,
       headers: {
         'Content-Type': 'application/json',
         ...options.headers,
       },
       ...options,
+      credentials: 'include' as RequestCredentials,
     }
 
     const res = await fetch(String(url), optionsWithHeaders)
