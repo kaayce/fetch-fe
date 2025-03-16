@@ -6,10 +6,7 @@ import sessionStorageInstance from './storage'
 const handleGlobalQueryError = (error: Error) => {
   const errorMessage = error.message || 'An unknown error occurred'
 
-  if (
-    errorMessage.includes('401') ||
-    errorMessage.includes('Authentication failed')
-  ) {
+  if (errorMessage.includes('401') || errorMessage.includes('Unauthorized')) {
     sessionStorageInstance.removeValue('user')
     toast.error('Your session has expired. Please log in again.')
 
@@ -30,7 +27,7 @@ export const createQueryClient = () =>
         retry: (failureCount, error: Error) => {
           if (
             error.message.includes('401') ||
-            error.message.includes('Authentication failed')
+            error.message.includes('Unauthorized')
           ) {
             return false
           }
