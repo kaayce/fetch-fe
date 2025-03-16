@@ -16,11 +16,11 @@ export const apiRequest = async <T = unknown>(
     }
 
     const optionsWithHeaders: RequestInit = {
+      ...options,
       headers: {
         'Content-Type': 'application/json',
         ...options.headers,
       },
-      ...options,
       credentials: 'include' as RequestCredentials,
     }
 
