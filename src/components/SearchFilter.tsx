@@ -34,15 +34,15 @@ export const SearchFilter = ({ totalResults, filters, setFilters }: Props) => {
     },
     [setFilters]
   )
+  const debouncedSetFilters = debounce<number>((value: number) => {
+    setFilters((prev) => ({ ...prev, ageMax: value }))
+  }, DELAY_MS)
 
   const handleSliderChange = useCallback(
     (value: number) => {
-      const debouncedSetFilters = debounce<number>((value: number) => {
-        setFilters((prev) => ({ ...prev, ageMax: value }))
-      }, DELAY_MS)
       debouncedSetFilters(value)
     },
-    [setFilters]
+    [debouncedSetFilters]
   )
 
   const clearSelection = useCallback(() => {

@@ -60,7 +60,7 @@ const SearchPage = () => {
     <div className="container max-w-screen-lg flex flex-col h-full gap-4">
       <div className="flex flex-col lg:flex-row gap-4">
         {/* Sidebar for Desktop */}
-        <aside className="hidden lg:block w-1/5 mt-13 space-y-4">
+        <aside className="hidden lg:block w-1/5 mt-13 sticky h-[40em] top-0 space-y-4">
           <Favourites
             favourites={favourites}
             reset={resetFavourites}
