@@ -1,32 +1,20 @@
+import type { DogWithLocation } from '@/api/dog.types'
 import DogMatchCard from '@/components/DogMatchCard'
-import { Card, CardHeader, CardContent } from '@/components/ui/card'
-import { Skeleton } from '@/components/ui/skeleton'
 import { useAuth } from '@/hooks/useAuth'
-import { useFetchDogsById } from '@/hooks/useFetchDogsById'
-import { useFetchLocations } from '@/hooks/useFetchLocations'
 import { PATHS } from '@/lib/constants'
 import sessionStorageInstance from '@/lib/storage'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router'
 
 const MatchPage = () => {
-  const match = sessionStorageInstance.getValue<string>('match')
+  const matchedDog = sessionStorageInstance.getValue<DogWithLocation>('match')
 
   const navigate = useNavigate()
 
   const { user } = useAuth()
-  const { dogs, dogsLoading } = useFetchDogsById({
-    ids: match ? [match] : [],
-    enabled: !!match,
-  })
-
-  const { locations, locationsLoading } = useFetchLocations({
-    zipCodes: dogs.map((d) => d.zip_code),
-    enabled: !dogsLoading,
-  })
 
   useEffect(() => {
-    if (!match) {
+    if (!matchedDog) {
       navigate(PATHS.HOME)
     }
     return () => {
@@ -34,14 +22,10 @@ const MatchPage = () => {
         sessionStorageInstance.removeValue('match')
       }
     }
-  }, [match, navigate])
+  }, [matchedDog, navigate])
 
-  const dogWithLocation = {
-    ...dogs[0],
-    location: locations[0],
-  }
+  if (!matchedDog) return null
 
-  const isLoading = dogsLoading || locationsLoading
   return (
     <div className="flex flex-col items-center space-y-8 h-full">
       <div>
@@ -50,34 +34,8 @@ const MatchPage = () => {
         </h1>
         <p className="text-center">You have successfully matched with a dog.</p>
       </div>
-      {isLoading ? (
-        <DogMatchCardSkeleton />
-      ) : (
-        <DogMatchCard dog={dogWithLocation} />
-      )}
+      <DogMatchCard dog={matchedDog} />
     </div>
-  )
-}
-
-const DogMatchCardSkeleton = () => {
-  return (
-    <Card className="relative p-0 gap-0 pb-3 max-w-sm w-full">
-      <Skeleton className="w-full h-48" />
-
-      {/* Dog Details Skeleton */}
-      <CardHeader className="text-center p-1">
-        <Skeleton className="w-24 h-6" />
-      </CardHeader>
-
-      <CardContent className="text-left text-gray-600 text-sm px-2">
-        <div className="flex gap-4">
-          <Skeleton className="w-16 h-4" />
-          <Skeleton className="w-12 h-6 rounded-lg" />
-          <Skeleton className="w-12 h-6 rounded-lg" />
-          <Skeleton className="w-12 h-6 rounded-lg" />
-        </div>
-      </CardContent>
-    </Card>
   )
 }
 

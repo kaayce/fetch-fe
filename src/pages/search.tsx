@@ -52,8 +52,7 @@ const SearchPage = () => {
   }
 
   const match = () => {
-    resetFavourites()
-    mutate.mutate(favourites.map((fav) => fav.id))
+    mutate.mutate()
   }
 
   return (
