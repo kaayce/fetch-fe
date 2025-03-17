@@ -12,7 +12,7 @@ import { APP_NAME } from '@/lib/constants'
 import { useAuth } from '@/hooks/useAuth'
 import { loginSchema, LoginSchemaType } from '@/lib/validations'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useTransition } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import {
   Card,
@@ -24,7 +24,7 @@ import {
 
 const LoginPage = () => {
   const { signIn } = useAuth()
-  const [isPending, startTransition] = useTransition()
+  const [disabled, setDisabled] = useState(false)
 
   const form = useForm<LoginSchemaType>({
     resolver: zodResolver(loginSchema),
@@ -35,18 +35,19 @@ const LoginPage = () => {
   })
   const { control, handleSubmit } = form
 
-  const onSubmit = (data: LoginSchemaType) => {
-    startTransition(() => {
-      try {
-        signIn(data)
-      } catch (error) {
-        console.error('Login failed:', error)
-        form.setError('root', {
-          type: 'manual',
-          message: 'Login failed. Please try again.',
-        })
-      }
-    })
+  const onSubmit = async (data: LoginSchemaType) => {
+    try {
+      setDisabled(true)
+      signIn(data)
+    } catch (error) {
+      console.error('Login failed:', error)
+      form.setError('root', {
+        type: 'manual',
+        message: 'Login failed. Please try again.',
+      })
+    } finally {
+      setDisabled(false)
+    }
   }
 
   return (
@@ -93,7 +94,7 @@ const LoginPage = () => {
 
             <div className="flex justify-end">
               <Button
-                disabled={isPending}
+                disabled={disabled}
                 type="submit"
                 className="w-full cursor-pointer"
               >
