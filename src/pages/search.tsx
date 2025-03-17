@@ -35,11 +35,11 @@ const SearchPage = () => {
   const [currentPage, setCurrentPage] = useState(1)
 
   const handleSortChange = (sort: SortField) => {
-    setFilters((prev) => ({ ...prev, sort }))
+    setFilters({ sort })
   }
 
   const handlePageSizeChange = (pageSize: string) => {
-    setFilters((prev) => ({ ...prev, size: +pageSize }))
+    setFilters({ size: +pageSize })
   }
 
   const handlePageChange = (type: 'next' | 'prev') => {
@@ -47,7 +47,7 @@ const SearchPage = () => {
     if (!targetUrl) return
 
     const newFrom = getFromValue(targetUrl)
-    setFilters((prev) => ({ ...prev, from: newFrom }))
+    setFilters({ from: newFrom })
     setCurrentPage((curr) => (type === 'next' ? curr + 1 : curr - 1))
   }
 

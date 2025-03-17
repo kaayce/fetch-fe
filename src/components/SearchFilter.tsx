@@ -1,4 +1,4 @@
-import { useCallback, type Dispatch, type SetStateAction } from 'react'
+import { useCallback } from 'react'
 import { BreedSelect } from './BreedSelect'
 import { AgeSlider } from './AgeSlider'
 import type { DogSearchParams } from '@/api/dog.types'
@@ -11,7 +11,7 @@ import { DELAY_MS } from '@/lib/constants'
 
 type Props = {
   filters: Required<DogSearchParams>
-  setFilters: Dispatch<SetStateAction<Required<DogSearchParams>>>
+  setFilters: (filters: Partial<DogSearchParams>) => void
   totalResults: number
 }
 
@@ -25,17 +25,17 @@ export const SearchFilter = ({ totalResults, filters, setFilters }: Props) => {
 
   const toggleSelection = useCallback(
     (breedId: string) => {
-      setFilters((prev) => ({
-        ...prev,
-        breeds: prev.breeds?.includes(breedId)
-          ? prev.breeds.filter((id) => id !== breedId)
-          : [...(prev.breeds || []), breedId],
-      }))
+      const updatedBreeds = filters.breeds.includes(breedId)
+        ? filters.breeds.filter((id) => id !== breedId)
+        : [...filters.breeds, breedId]
+
+      setFilters({ breeds: updatedBreeds })
     },
-    [setFilters]
+    [filters, setFilters]
   )
+
   const debouncedSetFilters = debounce<number>((value: number) => {
-    setFilters((prev) => ({ ...prev, ageMax: value }))
+    setFilters({ ageMax: value })
   }, DELAY_MS)
 
   const handleSliderChange = useCallback(
@@ -46,7 +46,7 @@ export const SearchFilter = ({ totalResults, filters, setFilters }: Props) => {
   )
 
   const clearSelection = useCallback(() => {
-    setFilters(() => defaultFilters)
+    setFilters(defaultFilters)
   }, [setFilters])
 
   return (
