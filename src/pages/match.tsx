@@ -41,8 +41,6 @@ const MatchPage = () => {
     location: locations[0],
   }
 
-  console.log({ dogs, locations })
-
   const isLoading = dogsLoading || locationsLoading
   return (
     <div className="flex flex-col items-center space-y-8 h-full">

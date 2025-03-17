@@ -30,9 +30,9 @@ function App() {
               </QueryClientProvider>
             }
           >
+            <Route path={PATHS.LOGIN} element={<Login />} />
             <Route path={PATHS.HOME} element={<Search />} />
             <Route path={PATHS.MATCH} element={<Match />} />
-            <Route path={PATHS.LOGIN} element={<Login />} />
           </Route>
         </Routes>
       </Suspense>
