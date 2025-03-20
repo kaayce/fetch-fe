@@ -1,4 +1,8 @@
-# Fetch Rewards Frontend Challenge
+# Pawradise - A Dog Adoption App
+
+## Description
+
+Pawradise is a dog adoption app that allows users to browse and adopt dogs.
 
 ## Getting Started
 
@@ -28,16 +32,3 @@ Open [http://localhost:5173](http://localhost:5173) with your browser to see the
 - User can filter by breed and age
 - User can select favourite dogs
 - Users can get a match from their favourite dogs
-
-## Limitations
-
-### Issue with the API for "/locations/search"
-
-- The API documentation specifies the request body as `LocationSearchParams`, but the API actually expects an array of zip codes instead.
-- Whenever I expect to pass a record in the request body it fails, it seems the API instead expects an array instead.
-
-### Issue with 3rd party cookies
-
-- In production, browsers with strict cookie policies may prevent cookies from being set.
-- To address this issue, you can:
-  - Adjust settings to allow third-party cookies.
